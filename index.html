@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0a10">
+  <meta name="description" content="Social Cyrus — شبکه اجتماعی تو">
+  <title>Social Cyrus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script defer src="js/supabase.js"></script>
+  <script defer src="js/app.js"></script>
+  <script defer src="js/stories.js"></script>
+</head>
+<body>
+
+  <div class="auth-gate" id="authGate" aria-hidden="true">
+    <section class="auth-card" aria-labelledby="authTitle">
+      <div class="auth-brand"><span class="brand-mark">C</span><span>social <b>cyrus</b></span></div>
+      <div class="auth-intro"><span class="auth-kicker">YOUR SPACE / YOUR PEOPLE</span><h1 id="authTitle">به سایرس خوش اومدی</h1><p>برای ورود به اجتماع خودت، وارد شو یا یک حساب تازه بساز.</p></div>
+      <div class="auth-tabs" id="authTabs"><button type="button" class="auth-tab active" data-auth-mode="login">ورود</button><button type="button" class="auth-tab" data-auth-mode="signup">ثبت‌نام</button></div>
+      <form id="authForm" novalidate>
+        <label class="auth-field" id="authNameField" hidden>نام نمایشی<input id="authName" type="text" maxlength="32" autocomplete="name" placeholder="مثلاً سایرس"></label>
+        <label class="auth-field" id="authEmailField">ایمیل<input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required></label>
+        <label class="auth-field">رمز عبور<input id="authPassword" type="password" minlength="6" autocomplete="current-password" placeholder="حداقل ۶ کاراکتر" required></label>
+        <button class="auth-submit" id="authSubmit" type="submit">ورود به حساب <span>←</span></button>
+      </form>
+      <button type="button" class="auth-forgot" id="forgotPassword">رمز عبورت رو فراموش کردی؟</button>
+      <p class="auth-message" id="authMessage" role="status"></p>
+      <p class="auth-footnote">با ورود یا ثبت‌نام، اطلاعات حسابت به‌صورت امن در Supabase مدیریت می‌شود.</p>
+    </section>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Social Cyrus">
+        <span class="brand-mark">C</span><span>social <b>cyrus</b></span>
+      </a>
+      <div class="side-label">منو</div>
+      <nav class="main-nav" aria-label="منوی اصلی">
+        <button class="nav-item active" data-view="home"><span class="nav-icon">⌂</span>خانه</button>
+        <button class="nav-item" data-view="explore"><span class="nav-icon">⌕</span>اکسپلور</button>
+        <button class="nav-item" data-view="messages"><span class="nav-icon">▤</span>پیام‌ها <i class="nav-count">۳</i></button>
+        <button class="nav-item" data-view="notifications"><span class="nav-icon">♧</span>اعلان‌ها</button>
+        <button class="nav-item" data-view="saved"><span class="nav-icon">♧</span>ذخیره‌شده‌ها</button>
+      </nav>
+      <div class="side-label second-label">شخصی</div>
+      <nav class="main-nav">
+        <button class="nav-item" data-view="profile"><span class="nav-icon">◎</span>پروفایل من</button>
+        <button class="nav-item" data-view="settings"><span class="nav-icon">⚙</span>تنظیمات</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-profile">
+          <img src="https://i.pravatar.cc/100?img=12" alt="تصویر پروفایل" id="sidebarAvatar">
+          <div><strong id="sidebarName">کاربر سایرس</strong><small id="sidebarHandle">@cyrus_user</small></div>
+          <button class="more-btn" aria-label="بیشتر">•••</button>
+        </div>
+        <div class="sidebar-note"><span class="online-dot"></span> همه‌چیز برای ارتباط آماده است</div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">C</span><b>Social Cyrus</b></div>
+        <div class="page-heading"><span class="eyebrow">فضای خودت، صدای خودت</span><h1 id="pageTitle">خانه</h1></div>
+        <div class="top-actions">
+          <label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="جست‌وجو در سایرس..."><kbd>/</kbd></label>
+          <button class="icon-button" data-view="notifications" aria-label="اعلان‌ها">♧<i class="notification-dot" hidden></i></button>
+          <button class="top-avatar" data-view="profile"><img src="https://i.pravatar.cc/100?img=12" alt="پروفایل" id="topAvatar"></button>
+        </div>
+      </header>
+
+      <div class="content-grid">
+        <section class="feed-column">
+          <section class="welcome-card">
+            <div class="welcome-copy"><span class="pill"><i></i> به جمع سایرس خوش اومدی</span><h2>اینجا، <em>خودت</em> باش.</h2><p>لحظه‌ها، ایده‌ها و چیزهایی که دوست داری رو با بقیه به اشتراک بذار.</p></div>
+            <div class="welcome-art" aria-hidden="true"><div class="orb orb-one"></div><div class="orb orb-two"></div><span>C</span></div>
+          </section>
+
+          <section class="stories-section">
+            <div class="section-heading"><div><h2>استوری‌ها</h2><p>از لحظه‌های تازه باخبر شو</p></div><button class="text-button" id="allStories">مشاهده همه <span>←</span></button></div>
+            <div class="stories-row" id="storiesRow">
+              <button class="story add-story"><span class="story-ring add-ring"><b>＋</b></span><span>استوری تو</span></button>
+              <button class="story"><span class="story-ring"><img src="https://i.pravatar.cc/100?img=47" alt=""></span><span>آراد</span></button>
+              <button class="story"><span class="story-ring"><img src="https://i.pravatar.cc/100?img=32" alt=""></span><span>سارا</span></button>
+              <button class="story"><span class="story-ring"><img src="https://i.pravatar.cc/100?img=5" alt=""></span><span>پارسا</span></button>
+              <button class="story"><span class="story-ring"><img src="https://i.pravatar.cc/100?img=44" alt=""></span><span>نیلوفر</span></button>
+              <button class="story"><span class="story-ring"><img src="https://i.pravatar.cc/100?img=11" alt=""></span><span>امیر</span></button>
+              <button class="story"><span class="story-ring"><img src="https://i.pravatar.cc/100?img=25" alt=""></span><span>هلیا</span></button>
+            </div>
+          </section>
+
+          <section class="composer-card">
+            <div class="composer-top"><img src="https://i.pravatar.cc/100?img=12" alt="" class="avatar" id="composerAvatar"><button id="composerPrompt" class="composer-prompt">امروز چه چیزی توی ذهنته؟</button></div>
+            <div class="composer-bottom"><div class="composer-tools"><button id="addImageBtn"><span class="tool-image">▧</span> تصویر</button><button id="addFeelingBtn"><span class="tool-feeling">✧</span> حس و حال</button></div><button class="primary-button" id="openComposer">ایجاد پست <span>＋</span></button></div>
+          </section>
+
+          <div class="feed-toolbar"><div><h2>آخرین پست‌ها</h2><span class="feed-subtitle">چیزهایی که دنبال می‌کنی</span></div><button class="filter-button" id="feedFilter">تازه‌ترین <span>⌄</span></button></div>
+          <div id="postsContainer" class="posts-list" aria-live="polite"></div>
+          <div class="end-message">— فعلاً همین‌قدر؛ به‌زودی پست‌های بیشتری می‌بینی —</div>
+        </section>
+
+        <aside class="right-column">
+          <section class="side-card profile-summary">
+            <div class="card-title"><h3>پروفایل تو</h3><button class="dots">•••</button></div>
+            <div class="profile-cover"></div>
+            <img class="profile-large" src="https://i.pravatar.cc/120?img=12" alt="تصویر کاربر" id="summaryAvatar">
+            <div class="profile-info"><strong id="summaryName">کاربر سایرس</strong><span>@cyrus_user</span><p id="summaryBio">دارم لحظه‌ها رو جمع می‌کنم ✨</p></div>
+            <div class="profile-stats"><div><b id="summaryPostCount">۰</b><span>پست</span></div><div><b id="summaryFollowerCount">۰</b><span>دنبال‌کننده</span></div><div><b id="summaryFollowingCount">۰</b><span>دنبال‌شونده</span></div></div>
+            <button class="outline-button full-width" data-view="profile">مشاهده پروفایل</button>
+          </section>
+
+          <section class="side-card suggestions-card">
+            <div class="card-title"><div><h3>پیشنهاد برای تو</h3><p>آدم‌های جالب سایرس</p></div><button class="text-button" id="refreshSuggestions">تازه‌سازی</button></div>
+            <div id="suggestionsList" class="suggestions-list">
+              <div class="suggestion"><img src="https://i.pravatar.cc/100?img=47" alt=""><div><b>آراد محمدی</b><span>@arad.m</span></div><button class="follow-button">دنبال کردن</button></div>
+              <div class="suggestion"><img src="https://i.pravatar.cc/100?img=32" alt=""><div><b>سارا رضایی</b><span>@sara.r</span></div><button class="follow-button">دنبال کردن</button></div>
+              <div class="suggestion"><img src="https://i.pravatar.cc/100?img=5" alt=""><div><b>پارسا نوری</b><span>@parsa.n</span></div><button class="follow-button">دنبال کردن</button></div>
+            </div>
+            <button class="show-more" data-view="explore">مشاهده افراد بیشتر ←</button>
+          </section>
+
+          <section class="side-card trends-card">
+            <div class="card-title"><div><h3>موضوعات داغ</h3><p>گفت‌وگوهای محبوب امروز</p></div><span class="trend-spark">✳</span></div>
+            <a class="trend" href="#"><span>#</span><div><b>طراحی_دیجیتال</b><small>۲٫۴ هزار پست</small></div><i>↗</i></a>
+            <a class="trend" href="#"><span>#</span><div><b>تکنولوژی</b><small>۱٫۸ هزار پست</small></div><i>↗</i></a>
+            <a class="trend" href="#"><span>#</span><div><b>زندگی_روزمره</b><small>۹۸۰ پست</small></div><i>↗</i></a>
+          </section>
+          <footer class="site-footer">درباره ما　 قوانین　 حریم خصوصی<br><span>© ۲۰۲۶ Social Cyrus</span></footer>
+        </aside>
+      </div>
+
+      <section class="feature-page" id="explorePage" hidden>
+        <div class="feature-heading"><div><span class="profile-label">DISCOVER CYRUS</span><h2>آدم‌های تازه پیدا کن</h2><p>به جمع‌های تازه وصل شو و سازنده‌های موردعلاقه‌ات رو دنبال کن.</p></div><button class="outline-button" id="refreshExplore">↻ تازه‌سازی</button></div>
+        <div class="people-grid" id="explorePeople"><div class="feature-empty">در حال دریافت کاربران...</div></div>
+      </section>
+
+      <section class="feature-page" id="notificationsPage" hidden>
+        <div class="feature-heading"><div><span class="profile-label">YOUR ACTIVITY</span><h2>اعلان‌ها</h2><p>از اتفاق‌هایی که در Social Cyrus برای حسابت می‌افتد باخبر شو.</p></div><button class="outline-button" id="markAllNotifications">خواندن همه</button></div>
+        <div class="notifications-list" id="notificationsList"><div class="feature-empty">در حال دریافت اعلان‌ها...</div></div>
+      </section>
+
+      <section class="profile-page public-profile-page" id="publicProfilePage" hidden>
+        <div class="public-profile-toolbar"><button class="outline-button" id="backFromPublicProfile">→ بازگشت</button><span class="profile-kicker">SOCIAL CYRUS / CREATOR</span></div>
+        <div class="profile-hero public-profile-hero">
+          <div class="profile-hero-glow"></div>
+          <div class="profile-hero-top"><span class="profile-kicker">CYRUS / COMMUNITY</span><span class="profile-label">PUBLIC PROFILE</span></div>
+          <div class="profile-identity">
+            <div class="profile-avatar-wrap"><img id="publicProfileAvatar" src="https://i.pravatar.cc/160?img=12" alt="تصویر پروفایل"><span class="profile-online"></span></div>
+            <div class="profile-identity-copy"><span class="profile-label">CREATOR PROFILE</span><h2 id="publicProfileName">کاربر سایرس</h2><span class="profile-handle" id="publicProfileHandle">@user</span><p id="publicProfileBio"></p></div>
+            <div class="public-profile-actions"><button class="follow-button" id="publicFollowButton" data-follow-user="" data-following="false">دنبال کردن</button><button class="primary-button" id="publicMessageButton">✉ پیام خصوصی</button><button class="profile-share" id="publicShareButton">↗ اشتراک</button></div>
+          </div>
+          <div class="profile-bottom-line"><span><i></i> عضو جامعه Social Cyrus</span><span id="publicProfileJoined"></span></div>
+        </div>
+        <div class="profile-stat-grid public-profile-stats">
+          <div class="profile-stat-card"><span class="stat-symbol">▧</span><strong id="publicPostCount">۰</strong><small>پست منتشرشده</small></div>
+          <div class="profile-stat-card"><span class="stat-symbol">♧</span><strong id="publicFollowerCount">۰</strong><small>دنبال‌کننده</small></div>
+          <div class="profile-stat-card"><span class="stat-symbol">↗</span><strong id="publicFollowingCount">۰</strong><small>دنبال‌شونده</small></div>
+        </div>
+        <div class="profile-content-panel"><div class="profile-content-heading"><div><span class="profile-label">THEIR COLLECTION</span><h3>پست‌های این کاربر</h3><p>چیزهایی که با جامعه سایرس به اشتراک گذاشته</p></div></div><div class="profile-posts" id="publicProfilePosts"><div class="feature-empty">در حال دریافت پست‌ها...</div></div></div>
+      </section>
+
+      <section class="feature-page messages-page" id="messagesPage" hidden>
+        <div class="feature-heading"><div><span class="profile-label">PRIVATE SPACE</span><h2>پیام‌های خصوصی</h2><p>گفت‌وگوهای تو در Social Cyrus</p></div></div>
+        <div class="messenger-layout">
+          <aside class="inbox-panel"><div class="inbox-heading"><b>گفت‌وگوها</b><button class="text-button" id="refreshInbox">تازه‌سازی</button></div><div id="inboxList" class="inbox-list"><div class="feature-empty">در حال دریافت گفتگوها...</div></div></aside>
+          <section class="chat-panel"><div class="chat-empty" id="chatEmpty"><span>✉</span><b>یک گفت‌وگو انتخاب کن</b><p>از پروفایل کاربران می‌تونی گفت‌وگوی جدید شروع کنی.</p></div><div id="activeChat" hidden><header class="chat-header"><img id="chatUserAvatar" src="" alt=""><div><b id="chatUserName"></b><span id="chatUserHandle"></span><small id="chatUserStatus" class="chat-user-status">آفلاین</small></div></header><div class="chat-messages" id="chatMessages"></div><form class="chat-compose" id="chatForm">
+  <div class="chat-reply-preview" id="chatReplyPreview" hidden><span><b>در پاسخ به پیام</b><small id="chatReplyText"></small></span><button type="button" id="cancelChatReply" aria-label="لغو پاسخ">×</button></div>
+  <div class="chat-attach-actions">
+    <button type="button" class="chat-tool-btn" id="attachImageBtn" title="ارسال عکس" aria-label="ارسال عکس">▧</button>
+    <button type="button" class="chat-tool-btn" id="attachVideoBtn" title="ارسال ویدئو" aria-label="ارسال ویدئو">▶</button>
+    <button type="button" class="chat-tool-btn" id="attachFileBtn" title="ارسال فایل" aria-label="ارسال فایل">＋</button>
+    <button type="button" class="chat-tool-btn" id="recordVoiceBtn" title="ضبط پیام صوتی" aria-label="ضبط پیام صوتی">🎙</button>
+  </div>
+  <input id="chatImageInput" type="file" accept="image/*" hidden>
+  <input id="chatVideoInput" type="file" accept="video/*" hidden>
+  <input id="chatFileInput" type="file" hidden>
+  <input id="chatInput" type="text" maxlength="2000" placeholder="پیامت رو بنویس..." autocomplete="off">
+  <button type="submit" id="chatSendButton">ارسال ↗</button>
+  <span id="voiceRecordStatus" class="voice-record-status" hidden>در حال ضبط…</span>
+</form></div></section>
+        </div>
+      </section>
+
+      <section class="profile-page" id="profilePage" hidden>
+        <div class="profile-hero">
+          <div class="profile-hero-glow"></div>
+          <div class="profile-hero-top"><span class="profile-kicker">CYRUS / YOUR SPACE</span><button class="profile-edit" id="editProfileBtn">✎　ویرایش پروفایل</button></div>
+          <div class="profile-identity">
+            <div class="profile-avatar-wrap"><img src="https://i.pravatar.cc/160?img=12" alt="تصویر پروفایل" id="profileAvatar"><span class="profile-online"></span></div>
+            <div class="profile-identity-copy"><span class="profile-label">CREATOR PROFILE</span><h2 id="profileName">کاربر سایرس</h2><span class="profile-handle">@cyrus_user <i>✦ عضو سایرس</i></span><p id="profileBio">دارم لحظه‌ها رو جمع می‌کنم؛ ایده‌ها رو می‌سازم و مسیر خودم رو می‌رم. ✨</p></div>
+            <div class="profile-hero-actions"><button class="profile-share" id="shareProfileBtn">↗　اشتراک پروفایل</button><button class="profile-signout" id="signOutBtn">خروج از حساب</button><button class="profile-more" aria-label="بیشتر">•••</button></div>
+          </div>
+          <div class="profile-bottom-line"><span><i></i> فعال در سایرس</span><span>✧　ساخته‌شده برای ارتباط</span></div>
+        </div>
+
+        <div class="profile-overview">
+          <div class="profile-overview-title"><div><span class="profile-label">YOUR ACTIVITY</span><h3>نمای کلی فعالیت</h3></div><span class="profile-period">همه زمان‌ها　⌄</span></div>
+          <div class="profile-stat-grid">
+            <div class="profile-stat-card"><span class="stat-symbol">▧</span><strong id="myPostCount">۰</strong><small>پست منتشرشده</small><i>YOUR CONTENT</i></div>
+            <div class="profile-stat-card"><span class="stat-symbol">♧</span><strong id="profileFollowerCount">۰</strong><small>دنبال‌کننده</small><i>YOUR COMMUNITY</i></div>
+            <div class="profile-stat-card"><span class="stat-symbol">↗</span><strong id="profileFollowingCount">۰</strong><small>دنبال‌شونده</small><i>YOUR NETWORK</i></div>
+            <div class="profile-stat-card featured"><span class="stat-symbol">✦</span><strong>۱۲</strong><small>تعامل این هفته</small><i>WEEKLY ACTIVITY</i></div>
+          </div>
+        </div>
+
+        <div class="profile-content-panel">
+          <div class="profile-content-heading"><div><span class="profile-label">YOUR COLLECTION</span><h3>ردپای تو</h3><p>چیزهایی که در Social Cyrus به اشتراک گذاشتی</p></div><button class="profile-new-post" id="profileNewPost">＋　پست جدید</button></div>
+          <div class="profile-tabs" role="tablist"><button class="profile-tab active" data-profile-tab="posts">همه پست‌ها <b id="tabPostCount">۰</b></button><button class="profile-tab" data-profile-tab="media">رسانه‌ها</button><button class="profile-tab" data-profile-tab="saved">ذخیره‌شده‌ها</button></div>
+          <div class="profile-posts" id="profilePosts"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="منوی موبایل">
+    <button class="active" data-view="home"><span>⌂</span>خانه</button>
+    <button data-view="explore"><span>⌕</span>اکسپلور</button>
+    <button class="mobile-create" id="mobileCreate"><span>＋</span></button>
+    <button data-view="messages"><span>▤</span>پیام‌ها</button>
+    <button data-view="profile"><span>◎</span>پروفایل</button>
+  </nav>
+
+  <div class="modal-backdrop" id="postModal" aria-hidden="true">
+    <section class="post-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header"><div><span class="eyebrow">یک لحظه تازه</span><h2 id="modalTitle">ایجاد پست</h2></div><button class="close-modal" id="closeModal" aria-label="بستن">×</button></div>
+      <div class="modal-user"><img src="https://i.pravatar.cc/100?img=12" alt=""><div><b>کاربر سایرس</b><span>انتشار برای همه</span></div></div>
+      <textarea id="postText" placeholder="چی دوست داری به اشتراک بذاری؟" maxlength="600"></textarea>
+      <div class="image-preview" id="imagePreview"></div>
+      <div class="modal-actions"><label class="attach-button" for="postImage">▧ افزودن تصویر</label><input id="postImage" type="file" accept="image/*" hidden><span id="charCount">۰ / ۶۰۰</span></div>
+      <button class="primary-button publish-button" id="publishPost">انتشار پست <span>↗</span></button>
+      <p class="modal-hint" id="publishHint">پست آزمایشی در همین مرورگر نمایش داده می‌شود؛ با اتصال Supabase ذخیره آنلاین فعال می‌شود.</p>
+    </section>
+  </div>
+  <div class="modal-backdrop" id="editProfileModal" aria-hidden="true">
+    <section class="post-modal edit-profile-modal" role="dialog" aria-modal="true" aria-labelledby="editProfileTitle">
+      <div class="modal-header"><div><span class="eyebrow">YOUR IDENTITY / CYRUS</span><h2 id="editProfileTitle">ویرایش پروفایل</h2></div><button class="close-modal" id="closeEditProfile" aria-label="بستن">×</button></div>
+      <div class="edit-avatar-area"><img id="editAvatarPreview" src="https://i.pravatar.cc/120?img=12" alt="پیش‌نمایش عکس پروفایل"><div><b>تصویر پروفایل</b><small>یک تصویر واضح و مربعی انتخاب کن</small><label class="attach-button" for="profileImageInput">انتخاب تصویر</label><input id="profileImageInput" type="file" accept="image/*" hidden></div></div>
+      <label class="edit-field">نام نمایشی<input id="editDisplayName" type="text" maxlength="32" placeholder="مثلاً سایرس"></label>
+      <label class="edit-field">بیوگرافی<textarea id="editBio" maxlength="160" rows="3" placeholder="چند کلمه درباره خودت بنویس..."></textarea><small id="bioCharCount">۰ / ۱۶۰</small></label>
+      <button class="primary-button publish-button" id="saveProfileBtn">ذخیره تغییرات <span>✓</span></button>
+      <p class="modal-hint">تغییرات فعلاً فقط در همین مرورگر ذخیره می‌شوند.</p>
+    </section>
+  </div>
+  <div class="modal-backdrop story-create-backdrop" id="storyCreateModal" aria-hidden="true">
+    <section class="post-modal story-create-modal" role="dialog" aria-modal="true" aria-labelledby="storyCreateTitle">
+      <div class="modal-header"><div><span class="eyebrow">A MOMENT / 24 HOURS</span><h2 id="storyCreateTitle">استوری جدید</h2></div><button class="close-modal" id="closeStoryCreate" aria-label="بستن">×</button></div>
+      <div class="story-upload-area"><span>＋</span><b>چه چیزی می‌خواهی به استوری اضافه کنی؟</b><div class="story-pick-actions"><button type="button" id="pickStoryPhoto" class="story-pick-btn">▧ انتخاب عکس</button><button type="button" id="pickStoryVideo" class="story-pick-btn">▶ انتخاب ویدئو</button></div><small>عکس تا ۱۲ مگابایت · ویدئو تا ۵۰ مگابایت</small></div>
+      <input id="storyFile" type="file" accept="image/*" hidden>
+      <input id="storyVideoFile" type="file" accept="video/*" hidden>
+      <div class="story-preview" id="storyPreview"></div>
+      <button class="primary-button publish-button" id="publishStory">انتشار استوری</button>
+      <p class="modal-hint">استوری پس از ۲۴ ساعت از فهرست نمایش حذف می‌شود.</p>
+    </section>
+  </div>
+  <div class="story-viewer-backdrop" id="storyViewer" aria-hidden="true">
+    <section class="story-viewer" role="dialog" aria-modal="true" aria-label="نمایش استوری">
+      <div class="story-progress" id="storyProgress"></div>
+      <header class="story-viewer-head"><img id="storyViewerAvatar" src="" alt=""><div><b id="storyViewerName"></b><small id="storyViewerTime"></small></div><button id="storyDelete" hidden title="حذف استوری">⌫</button><button id="closeStoryViewer" aria-label="بستن">×</button></header>
+      <div class="story-viewer-media" id="storyViewerMedia"></div>
+      <button class="story-nav story-nav-prev" id="storyPrev" aria-label="قبلی">‹</button><button class="story-nav story-nav-next" id="storyNext" aria-label="بعدی">›</button>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
